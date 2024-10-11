@@ -88,3 +88,13 @@ SELECT  Etudiant.nom, Etudiant.groupe_id FROM Etudiant ORDER BY groupe_id DESC, 
 
 SELECT Etudiant.nom, Etudiant.groupe_id FROM Etudiant ORDER BY groupe_id DESC, nom ASC LIMIT 6, 4;
 
+SELECT Etudiant.nom, Etudiant.code_postal FROM  Etudiant WHERE (nom LIKE '_A%' OR nom LIKE '_E%') AND code_postal LIKE '_5%';
+
+SELECT Etudiant.nom, Etudiant.code_postal
+FROM  Etudiant
+WHERE (nom REGEXP '^.A' OR nom REGEXP '^.E') AND code_postal REGEXP '^.5';
+
+SELECT DATEDIFF('2027-9-1', '2004-01-11') AS nb_jours;
+SELECT Etudiant.nom, date_naissance
+FROM Etudiant
+WHERE YEAR(NOw() - date_naissance > 20) OR (YEAR(now()) - YEAR(date_naissance) = 20 AND MONTH(now()) > 9);
