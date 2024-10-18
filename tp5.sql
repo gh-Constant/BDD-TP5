@@ -98,3 +98,74 @@ SELECT DATEDIFF('2027-9-1', '2004-01-11') AS nb_jours;
 SELECT Etudiant.nom, date_naissance
 FROM Etudiant
 WHERE YEAR(NOw() - date_naissance > 20) OR (YEAR(now()) - YEAR(date_naissance) = 20 AND MONTH(now()) > 9);
+
+SELECT nom, note_ue1 , note_ue1*2 AS note_ue1_sur_40
+FROM Etudiant
+WHERE note_ue1 >= 14
+ORDER BY note_ue1;
+
+
+SELECT nom, groupe_id, note_ue1,(note_ue1 + note_ue2) / 2 AS Moyenne_UE
+FROM Etudiant
+WHERE note_ue1 >= 14
+ORDER BY groupe_id DESC, Moyenne_UE DESC;
+
+SELECT nom, groupe_id, (note_ue1 + note_ue2) / 2 AS Moyenne_UE
+FROM Etudiant
+WHERE ((note_ue1 + note_ue2) / 2) >= 13
+ORDER BY note_ue1+Etudiant.note_ue2 DESC, groupe_id DESC;
+
+SELECT CONCAT('nom : ', Etudiant.nom, ' date_naissance: ', date_naissance) AS Etudiant
+FROM Etudiant
+WHERE YEAR(date_naissance) >= 2006
+ORDER BY  date_naissance DESC;
+
+SELECT COUNT(Etudiant.idEtudiant) AS Nbre_etudiants, Etudiant.groupe_id
+FROM Etudiant
+GROUP BY Etudiant.groupe_id;
+
+SELECT COUNT(Etudiant.idEtudiant) AS Nbre_etudiants, Etudiant.groupe_id, Etudiant.semestre_id
+FROM Etudiant;
+
+SELECT COUNT(Etudiant.idEtudiant) AS Nbre_etudiants
+FROM Etudiant
+
+SELECT COUNT(Etudiant.idEtudiant) AS Nbre_etudiants, Etudiant.code_postal, Etudiant.sexe
+FROM Etudiant
+WHERE sexe = 'H' AND code_postal BETWEEN 90000 AND 90999
+GROUP BY Etudiant.code_postal, Etudiant.sexe;
+
+SELECT COUNT(Etudiant.idEtudiant) AS Nbre_etudiants, Etudiant.sexe
+FROM Etudiant
+WHERE code_postal BETWEEN 90000 AND 90999
+GROUP BY  Etudiant.sexe;
+
+SELECT COUNT(Etudiant.idEtudiant) AS Nbre_etudiants
+FROM Etudiant
+WHERE sexe = 'H' AND code_postal BETWEEN 90000 AND 90999
+GROUP BY Etudiant.sexe;
+
+SELECT COUNT(Etudiant.idEtudiant) AS Nbre_etudiants_de_franche_compté
+FROM Etudiant
+WHERE code_postal BETWEEN 90000 AND 90999 OR    (code_postal BETWEEN 25000 AND 25999) OR (code_postal BETWEEN 39000 AND 39999) OR (code_postal BETWEEN 70000 AND 70999));
+
+SELECT FORMAT(AVG(note_ue1), 2) AS Moyenne_UE1, FORMAT(AVG(note_ue2),2) AS Moyenne_UE2, FORMAT((AVG(note_ue1)  + AVG(note_ue2)) / 2, 2) AS moyenne, Etudiant.groupe_id, Etudiant.semestre_id
+FROM Etudiant
+GROUP BY Etudiant.semestre_id, Etudiant.groupe_id;
+
+ALTER TABLE Etudiant ADD COLUMN admission CHAR(3);
+
+UPDATE Etudiant SET admission = 'ADM' WHERE note_ue1 >= 8 AND note_ue2 >= 8 AND (note_ue1 + note_ue2) / 2 >= 10;
+
+SELECT Etudiant.* FROM Etudiant;
+
+SELECT COUNT(Etudiant.idEtudiant) AS Nbre_etudiants_admis
+FROM Etudiant
+WHERE Etudiant.admission = 'ADM';
+
+SELECT date_naissance
+,DATE_ADD(date_naissance,INTERVAL 18 YEAR) AS plus18
+,DATEDIFF(curdate(),DATE_ADD(date_naissance,INTERVAL 18 YEAR)) AS diff_jours_majorite
+FROM Etudiant ;
+
+COUNT Etudiant.idEtudiant
